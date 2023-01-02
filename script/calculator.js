@@ -11,6 +11,14 @@ const display = document.querySelector('.calculator__display');
 const operations = Array.from(document.querySelectorAll('.operation'));
 const resetButton = document.getElementById('Reset');
 const backupOperations = Array.from(document.querySelectorAll('.operation'));
+const options = {
+  "+":0,
+  "-":0,
+  "*":0,
+  "/":0,
+  "%":0,
+  "=":0,
+}
 
 
 
@@ -42,7 +50,7 @@ function processing(first_digit, second_digit){
     first_operator = '';
     second_operator = '';
     currentOperation = null;
-    shouldResetScreen = false;
+    shouldResetScreen = true;
     display.textContent = "nice try, but no...";
   }
   if(triger === '='){
@@ -50,36 +58,42 @@ function processing(first_digit, second_digit){
     first_operator = calculate.add(+first_digit, +second_digit);
     second_operator = '';
     display.textContent = `${first_operator}`;
+    options[currentOperation] += 1;
   }
   if(triger === '+'){
-    shouldResetScreen = false;
+    shouldResetScreen = true;
     first_operator = calculate.add(+first_digit, +second_digit);
     second_operator = '';
     display.textContent = `${first_operator}`;
+    options[currentOperation] += 1;
   }
   else if(triger === '-'){
-    shouldResetScreen = false;
+    shouldResetScreen = true;
     first_operator = calculate.subtract(+first_digit, +second_digit);
     second_operator = '';
     display.textContent = `${first_operator}`;
+    options[currentOperation] += 1;
   }
   else if(triger === '*'){
-    shouldResetScreen = false;
+    shouldResetScreen = true;
     first_operator = calculate.multiply(+first_digit, +second_digit);
     second_operator = '';
     display.textContent = `${first_operator}`;
+    options[currentOperation] += 1;
   }
   else if(triger === '/'){
-    shouldResetScreen = false;
+    shouldResetScreen = true;
     first_operator = calculate.divide(+first_digit, +second_digit);
     second_operator = '';
     display.textContent = `${first_operator}`;
+    options[currentOperation] += 1;
   }
   else if(triger === '%'){
-    shouldResetScreen = false;
+    shouldResetScreen = true;
     first_operator = calculate.division(+first_digit, +second_digit);
     second_operator = '';
     display.textContent = `${first_operator}`;
+    options[currentOperation] += 1;
   }
 }
  
@@ -95,6 +109,7 @@ function output(e){
   }
 
   if(currentOperation && e.keyCode != "8"){
+    shouldResetScreen = true;
     second_operator += key.value;
     display.textContent = `${second_operator}`;
     console.log(+second_operator+1);
@@ -107,11 +122,16 @@ function output(e){
 
 operations.forEach(key => key.addEventListener('click', () =>{
   
-    currentOperation = key.value;
+  currentOperation = key.value;
   if(shouldResetScreen == false && currentOperation != triger && triger != null){
       processing(+first_operator, +second_operator);
   }
+  if(shouldResetScreen == false && options[triger] > 0){
+    processing(+first_operator, +second_operator);
+    options[triger] -= 1;
+  }
   triger = currentOperation;  
+  shouldResetScreen = false;
   console.log(currentOperation);
 
 
