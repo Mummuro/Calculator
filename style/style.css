@@ -23,6 +23,7 @@ body {
   color: rgba(255, 255, 255, 0.7);
   font-size: 4em;
   text-align: right;
+  min-height: 75px;
 }
 
 .calculator__functions {
